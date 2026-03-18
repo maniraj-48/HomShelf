@@ -1,10 +1,3 @@
-//
-//  HomShelfApp.swift
-//  HomShelf
-//
-//  Created by Maniraj on 3/17/26.
-//
-
 import SwiftUI
 
 @main
