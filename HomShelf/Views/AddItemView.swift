@@ -33,20 +33,21 @@ struct AddItemView: View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(Color.gray.opacity(0.15))
-                                .frame(height: 200)
+                                .frame(height: 180)
                             
                             if let image = selectedImage {
                                 Image(uiImage: image)
                                     .resizable()
                                     .scaledToFill()
-                                    .frame(height: 200)
+                                    .frame(height: 180)
                                     .clipShape(RoundedRectangle(cornerRadius: 16))
                             } else {
-                                VStack(spacing: 8) {
+                                VStack(spacing: 10) {
                                     Image(systemName: "camera.badge.plus")
-                                        .font(.system(size: 40))
-                                        .foregroundColor(.gray.opacity(0.5))
+                                        .font(.system(size: 36))
+                                        .foregroundColor(.gray)
                                     Text("Tap to add photo")
+                                        .font(.system(size: 14, weight: .medium))
                                         .foregroundColor(.gray)
                                 }
                             }
@@ -110,54 +111,52 @@ struct AddItemView: View {
                                     .foregroundColor(.gray)
                             }
                             
-                            // Category and Quantity
-                            HStack(spacing: 12) {
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text("Category")
-                                        .font(.system(size: 16, weight: .semibold))
-                                    
-                                    // Show custom category input if selected
-                                    if showCustomCategory {
-                                        HStack {
-                                            TextField("Type category...", text: $customCategory)
-                                                .padding()
-                                                .background(Color.white)
-                                                .cornerRadius(30)
-                                            
-                                            Button(action: {
-                                                showCustomCategory = false
-                                                category = "Dairy"
-                                            }) {
-                                                Image(systemName: "xmark.circle.fill")
-                                                    .foregroundColor(.gray)
-                                            }
+                            // Category — Full width
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Category")
+                                    .font(.system(size: 16, weight: .semibold))
+                                
+                                if showCustomCategory {
+                                    HStack {
+                                        TextField("Type category...", text: $customCategory)
+                                            .padding()
+                                            .background(Color.white)
+                                            .cornerRadius(30)
+                                        Button(action: {
+                                            showCustomCategory = false
+                                            category = "Dairy"
+                                        }) {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundColor(.gray)
                                         }
-                                    } else {
-                                        Picker("Category", selection: $category) {
-                                            ForEach(categories, id: \.self) { cat in
-                                                Text(cat).tag(cat)
-                                            }
+                                    }
+                                } else {
+                                    Picker("Category", selection: $category) {
+                                        ForEach(categories, id: \.self) { cat in
+                                            Text(cat).tag(cat)
                                         }
-                                        .padding()
-                                        .background(Color.white)
-                                        .cornerRadius(30)
-                                        .onChange(of: category) {
-                                            if category == "+ Add Custom" {
-                                                showCustomCategory = true
-                                                customCategory = ""
-                                            }
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.white)
+                                    .cornerRadius(30)
+                                    .onChange(of: category) {
+                                        if category == "+ Add Custom" {
+                                            showCustomCategory = true
+                                            customCategory = ""
                                         }
                                     }
                                 }
-                                
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text("Quantity")
-                                        .font(.system(size: 16, weight: .semibold))
-                                    TextField("1 lb, 2L...", text: $quantity)
-                                        .padding()
-                                        .background(Color.white)
-                                        .cornerRadius(30)
-                                }
+                            }
+                            
+                            // Quantity — Full width
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Quantity")
+                                    .font(.system(size: 16, weight: .semibold))
+                                TextField("e.g. 1 lb, 2L, 12 pack...", text: $quantity)
+                                    .padding()
+                                    .background(Color.white)
+                                    .cornerRadius(30)
                             }
                             
                             // Price and Duration
@@ -275,7 +274,6 @@ struct AddItemView: View {
     }
     
     func saveItem() {
-        // Use custom category if user typed one
         let finalCategory = showCustomCategory ? customCategory : category
         
         var newItem = GroceryItem(
@@ -297,4 +295,8 @@ struct AddItemView: View {
         store.addItem(newItem)
         dismiss()
     }
+}
+
+#Preview {
+    AddItemView(store: ItemStore())
 }
