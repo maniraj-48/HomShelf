@@ -1,4 +1,5 @@
 import SwiftUI
+import UserNotifications
 
 struct ProfileView: View {
     @EnvironmentObject var store: ItemStore
@@ -18,18 +19,15 @@ struct ProfileView: View {
     @State private var filterSpendingByDate = false
     @State private var showSpendingDatePicker = false
     
-    // App stats
     var totalItems: Int { store.items.count }
     var lowStockItems: Int { store.items.filter { $0.percentageLeft <= 20 }.count }
     var totalCategories: Int { Set(store.items.map { $0.category }).count }
     var totalSpent: Double { store.activityLog.reduce(0) { $0 + $1.price } }
     
-    // Latest purchase date
     var latestDate: Date {
         store.activityLog.map { $0.date }.max() ?? Date()
     }
     
-    // Monthly spending helper
     func getMonthlySpending() -> [(String, Double, [ActivityLog])] {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -37,8 +35,7 @@ struct ProfileView: View {
         let filtered = filterSpendingByDate ?
             store.activityLog.filter {
                 Calendar.current.isDate($0.date, inSameDayAs: spendingDate)
-            } :
-            store.activityLog
+            } : store.activityLog
         
         var groups: [String: [ActivityLog]] = [:]
         for log in filtered {
@@ -60,7 +57,6 @@ struct ProfileView: View {
         }
     }
     
-    // Categories with item count only
     var categoriesWithCount: [(String, Int)] {
         let cats = Set(store.items.map { $0.category })
         return cats.map { cat in
@@ -176,6 +172,14 @@ struct ProfileView: View {
                             Spacer()
                             Toggle("", isOn: $notificationsEnabled)
                                 .tint(.green)
+                                .onChange(of: notificationsEnabled) {
+                                    if notificationsEnabled {
+                                        NotificationManager.shared.requestPermission()
+                                        NotificationManager.shared.scheduleDailyCheck(for: store.items)
+                                    } else {
+                                        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                                    }
+                                }
                         }
                         .padding()
                         
@@ -352,7 +356,7 @@ struct ProfileView: View {
             }
         }
         
-        // Categories Sheet — shows only category names
+        // Categories Sheet
         .sheet(isPresented: $showCategories) {
             NavigationView {
                 ZStack {
@@ -411,8 +415,6 @@ struct ProfileView: View {
                     Color(red: 0.95, green: 0.98, blue: 0.95).ignoresSafeArea()
                     ScrollView {
                         VStack(spacing: 16) {
-                            
-                            // Total + Date Filter
                             HStack {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(filterSpendingByDate ? "Filtered Spent" : "Total Spent")
@@ -451,7 +453,6 @@ struct ProfileView: View {
                             .cornerRadius(16)
                             .padding(.horizontal)
                             
-                            // Monthly breakdown
                             if getMonthlySpending().isEmpty {
                                 VStack(spacing: 16) {
                                     Image(systemName: "calendar.badge.exclamationmark")

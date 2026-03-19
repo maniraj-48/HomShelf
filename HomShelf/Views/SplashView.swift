@@ -17,15 +17,13 @@ struct SplashView: View {
                     Spacer()
                     
                     // Logo Icon
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 24)
-                            .fill(Color.green)
-                            .frame(width: 100, height: 100)
-                        
-                        Image(systemName: "cabinet.fill")
-                            .font(.system(size: 50))
-                            .foregroundColor(.white)
-                    }
+                    // Logo Icon — using app icon image
+                    Image("homself_icon")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 120, height: 120)
+                        .cornerRadius(24)
+                        .shadow(color: .green.opacity(0.3), radius: 10, x: 0, y: 5)
                     .scaleEffect(isAnimating ? 1.0 : 0.5)
                     .opacity(isAnimating ? 1.0 : 0.0)
                     .animation(.spring(duration: 0.8), value: isAnimating)
