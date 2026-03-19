@@ -119,23 +119,6 @@ AI checks current market price
 
 ---
 
-## 🗓️ Development Plan
-
-| Day | Feature | Status |
-|---|---|---|
-| Day 1 | Project Setup + Wardboard | ✅ Done |
-| Day 2 | Navigation + Detail Screen | ✅ Done |
-| Day 3 | Save, Delete, Edit, Photo | ✅ Done |
-| Day 4 | UI Polish | ✅ Done |
-| Day 5 | UI Polish | ✅ Done |
-| Day 6 | Profile Screen | ✅ Done |
-| Day 7 | Push Notifications | ✅ Done |
-| Day 8 | AI Price Check | 🔜 In Progress |
-| Day 9 | Bug Fixes + Testing | 🔜 |
-| Day 10 | Final Polish + App Store | 🔜 |
-
----
-
 ## 👨‍💻 Developer
 
 **Maniraj** — [@maniraj-48](https://github.com/maniraj-48)
