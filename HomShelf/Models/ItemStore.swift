@@ -157,6 +157,9 @@ class ItemStore: ObservableObject {
             category: item.category
         )
         activityLog.append(log)
+        
+        // Schedule daily check
+        NotificationManager.shared.scheduleDailyCheck(for: items)
     }
     
     // Delete item
@@ -184,6 +187,11 @@ class ItemStore: ObservableObject {
     func updateItem(_ item: GroceryItem) {
         if let index = items.firstIndex(where: { $0.id == item.id }) {
             items[index] = item
+            
+            // Check if item is low and send notification
+            if item.percentageLeft <= 20 && item.notifyWhenLow {
+                NotificationManager.shared.sendLowStockNotification(for: item)
+            }
         }
     }
     
