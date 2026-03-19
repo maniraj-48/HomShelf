@@ -137,3 +137,7 @@ struct WardboardView: View {
         }
     }
 }
+
+#Preview {
+    WardboardView(store: ItemStore())
+}

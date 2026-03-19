@@ -29,30 +29,26 @@ struct ItemCardView: View {
                 
                 if let fileName = item.imageFileName,
                    let uiImage = ImageStorage.loadImage(fileName: fileName) {
-                    // User added photo → show it
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFill()
-                        .frame(height: 140)
+                        .frame(height: 130)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                 } else {
-                    // No photo → show first letter or emoji
                     RoundedRectangle(cornerRadius: 16)
                         .fill(categoryColor)
-                        .frame(height: 140)
+                        .frame(height: 130)
                         .overlay(
-                            VStack(spacing: 6) {
-                                // Shows emoji if user set one
-                                // OR first letter by default
+                            VStack(spacing: 4) {
                                 Text(item.displayEmoji)
-                                    .font(.system(size: 44, weight: .bold))
+                                    .font(.system(size: 36, weight: .bold))
                                     .foregroundColor(.black.opacity(0.6))
                                 
-                                // Item name always shown
                                 Text(item.name)
-                                    .font(.system(size: 13, weight: .semibold))
+                                    .font(.system(size: 12, weight: .semibold))
                                     .foregroundColor(.black.opacity(0.7))
                                     .multilineTextAlignment(.center)
+                                    .lineLimit(2)
                                     .padding(.horizontal, 8)
                             }
                         )
@@ -65,48 +61,52 @@ struct ItemCardView: View {
                     .padding(10)
             }
             
+            // Item Details
             VStack(alignment: .leading, spacing: 4) {
                 
                 Text(item.name)
-                    .font(.system(size: 15, weight: .bold))
+                    .font(.system(size: 14, weight: .bold))
                     .foregroundColor(.black)
+                    .lineLimit(1)
                 
                 HStack {
                     Text(item.category)
-                        .font(.system(size: 12))
+                        .font(.system(size: 11))
                         .foregroundColor(.gray)
                     Spacer()
                     Text("$\(item.pricePaid, specifier: "%.2f")")
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.system(size: 11, weight: .medium))
                         .foregroundColor(.black)
                 }
                 
                 HStack {
                     Text("\(Int(item.percentageLeft))% left")
-                        .font(.system(size: 12, weight: .semibold))
+                        .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(progressColor)
                     Spacer()
                     Text(item.statusText)
-                        .font(.system(size: 12))
+                        .font(.system(size: 11))
                         .foregroundColor(.gray)
                 }
                 
+                // Progress Bar
                 GeometryReader { geometry in
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 4)
                             .fill(Color.gray.opacity(0.2))
-                            .frame(height: 6)
+                            .frame(height: 5)
                         
                         RoundedRectangle(cornerRadius: 4)
                             .fill(progressColor)
                             .frame(
                                 width: geometry.size.width * CGFloat(item.percentageLeft / 100),
-                                height: 6
+                                height: 5
                             )
                     }
                 }
-                .frame(height: 6)
+                .frame(height: 5)
                 .padding(.top, 2)
+                .padding(.bottom, 4)
             }
             .padding(10)
         }

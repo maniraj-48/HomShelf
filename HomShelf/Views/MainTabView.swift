@@ -26,6 +26,7 @@ struct MainTabView: View {
             
             // Tab 3 - Profile
             ProfileView()
+                .environmentObject(store)
                 .tabItem {
                     VStack {
                         Image(systemName: "person.fill")
