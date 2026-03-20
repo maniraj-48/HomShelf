@@ -115,3 +115,4 @@ struct ItemCardView: View {
         .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
     }
 }
+
