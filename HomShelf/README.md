@@ -1,10 +1,10 @@
-# HomShelf — Your Smart Pantry
+# 🏠 HomShelf — Your Smart Pantry
 
-🔍 Problem
+## 🔍 Problem
 
 Many people forget to buy necessary grocery items even when they prepare a list before going to the store. This happens because people don't know exactly what items are left at home or how much remains. Someone may think there is enough rice, milk, or eggs at home, but when they return from shopping they realize the item is finished leading to inconvenience, extra trips to the store, and poor household inventory management.
 
-💡 Solution
+## 💡 Solution
 
 **HomShelf** is a smart iOS pantry management app that solves this problem by tracking household grocery items visually. After purchasing groceries, users enter item details such as quantity, price, and estimated duration. The app automatically decreases the stock percentage daily and alerts users when items are running low ensuring they never forget to restock essential items again.
 
@@ -12,7 +12,7 @@ Many people forget to buy necessary grocery items even when they prepare a list 
 
 - 💰 **Track every purchase price** — Record the price you paid each time you buy an item so you always know what you spent
 - 📊 **Compare prices over time** — See if the price of rice, milk or any item went up or down since your last purchase
-- 🤖 **AI Price Check** — Tap "See Price Today" on any item and Gemini AI will analyze the current market price online so you can decide whether to buy now or wait
+- 🤖 **AI Price Check** — Tap "See Price Today" on any item and Gemini AI searches top 5 stores to find the cheapest price in real time
 - 📈 **Monitor total grocery spending** — See exactly how much you have invested in groceries month by month with a full spending history breakdown
 - 🗂️ **Track by category** — View spending and stock levels across Dairy, Produce, Grains, Meat and custom categories
 - 📋 **Shopping Journal** — Every purchase, refill and deletion is logged with date and price so you have a complete history of your grocery activity
@@ -20,6 +20,7 @@ Many people forget to buy necessary grocery items even when they prepare a list 
 
 With HomShelf, users have complete visibility into their household supplies, spending habits, and grocery price trends — all in one place.
 
+---
 
 ## ✨ Features
 
@@ -27,7 +28,7 @@ With HomShelf, users have complete visibility into their household supplies, spe
 - 📊 **Auto Stock Tracking** — Items automatically decrease % based on purchase date and duration
 - 🔔 **Low Stock Alerts** — Push notifications when items drop below 20%
 - 💰 **Price Tracking** — Record purchase prices and track price history
-- 🤖 **AI Price Check** — Gemini AI analyzes current market prices (Coming Soon)
+- 🤖 **AI Price Check** — Gemini AI searches top 5 stores and finds cheapest price in real time
 - 📋 **Shopping Journal** — Track all purchases by date with Added/Refilled/Deleted history
 - 🗂️ **Categories** — Organize items by Dairy, Produce, Grains, Meat, Snacks or custom
 - 📸 **Item Photos** — Add photos from camera or gallery
@@ -52,26 +53,42 @@ With HomShelf, users have complete visibility into their household supplies, spe
 
 ---
 
+## 🔑 API Setup
+
+To use the AI Price Check feature you need a free Gemini API key:
+
+1. Go to (https://aistudio.google.com)
+2. Sign in with your Google account
+3. Click **"Get API Key"** → **"Create API Key"**
+4. Copy your API key
+5. Open `HomShelf/Models/GeminiService.swift`
+6. Replace `YOUR_API_KEY_HERE` with your actual key
+
+> ⚠️ Never share your API key publicly or push it to GitHub!
+
+---
+
 ## 📁 Project Structure
 ```
 HomShelf/
 ├── Models/
-│   ├── GroceryItem.swift       # Data model
-│   ├── ItemStore.swift         # Data manager
-│   ├── ImageStorage.swift      # Photo storage
-│   └── NotificationManager.swift # Push notifications
+│   ├── GroceryItem.swift         # Data model
+│   ├── ItemStore.swift           # Data manager
+│   ├── ImageStorage.swift        # Photo storage
+│   ├── NotificationManager.swift # Push notifications
+│   └── GeminiService.swift       # AI price check
 ├── Views/
-│   ├── SplashView.swift        # Welcome screen
-│   ├── MainTabView.swift       # Tab navigation
-│   ├── WardboardView.swift     # Home screen
-│   ├── AddItemView.swift       # Add new item
-│   ├── EditItemView.swift      # Edit item
-│   ├── ItemDetailView.swift    # Item details
-│   ├── ListView.swift          # Shopping journal
-│   └── ProfileView.swift       # Profile & stats
+│   ├── SplashView.swift          # Welcome screen
+│   ├── MainTabView.swift         # Tab navigation
+│   ├── WardboardView.swift       # Home screen
+│   ├── AddItemView.swift         # Add new item
+│   ├── EditItemView.swift        # Edit item
+│   ├── ItemDetailView.swift      # Item details
+│   ├── ListView.swift            # Shopping journal
+│   └── ProfileView.swift         # Profile & stats
 └── Components/
-    ├── ItemCardView.swift      # Item card component
-    └── ImagePicker.swift       # Camera/gallery picker
+    ├── ItemCardView.swift        # Item card component
+    └── ImagePicker.swift         # Camera/gallery picker
 ```
 
 ---
@@ -96,7 +113,11 @@ cd HomShelf
 open HomShelf.xcodeproj
 ```
 
-**3 — Run the app:**
+**3 — Add your Gemini API key:**
+- Open `HomShelf/Models/GeminiService.swift`
+- Replace `YOUR_API_KEY_HERE` with your actual key
+
+**4 — Run the app:**
 - Select your simulator or device
 - Press ▶️ Play button
 
@@ -115,6 +136,7 @@ Below 20% → Push notification sent
 User refills → History saved
       ↓
 AI checks current market price
+across top 5 stores in real time
 ```
 
 ---
